@@ -2,7 +2,7 @@
 
 ---
 
-This extension, TestUtils, provide some tooling for backward compatiblity tests of serialization / deserialization of query plans and results.
+This extension, TestUtils, provide some tooling for backward compatibility tests of serialization / deserialization of query plans and results.
 
 
 ## Building
