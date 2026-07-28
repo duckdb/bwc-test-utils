@@ -1,0 +1,8 @@
+# name: test/sql/smoke.test
+# description: Smoke test for the test_utils extension test suite
+# group: [sql]
+
+query I
+SELECT 1;
+----
+1

@@ -4,6 +4,7 @@
 #ifndef DUCKDB_CPP_EXTENSION_ENTRY
 #include <duckdb/main/extension_util.hpp>
 #endif
+#include "utils/compatibility.hpp"
 #include <type_traits>
 
 namespace duckdb {
@@ -57,8 +58,13 @@ void TableFunc(ClientContext &context, TableFunctionInput &input, DataChunk &out
 
 	auto &bind_data = input.bind_data->Cast<ParamsTableFunctionData>();
 	const bool result = CallFunctionHelper<Func>::call(context, bind_data.params, func);
+#if DUCKDB_VERSION_AT_MOST(1, 5, 1)
 	output.SetCardinality(1);
 	output.SetValue(0, 0, result);
+#else
+	output.data[0].Append(Value::BOOLEAN(result));
+	output.CheckCardinality(1);
+#endif
 }
 
 #ifdef DUCKDB_CPP_EXTENSION_ENTRY
