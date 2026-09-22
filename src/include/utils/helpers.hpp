@@ -28,7 +28,7 @@ struct RunOnceTableFunctionState : GlobalTableFunctionState {
 namespace internal {
 
 unique_ptr<FunctionData> SingleBoolResultBind(ClientContext &, TableFunctionBindInput &, vector<LogicalType> &out_types,
-                                              vector<std::string> &out_names);
+                                              vector<Identifier> &out_names);
 
 bool ShouldRun(TableFunctionInput &input);
 
