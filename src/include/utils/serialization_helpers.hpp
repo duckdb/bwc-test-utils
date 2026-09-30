@@ -56,7 +56,7 @@ public:
 	bool can_parse_query = true;
 	bool should_skip_query = false;
 	bool can_deserialize_plan = true;
-	string load_db_name;
+	Identifier load_db_name;
 	uint32_t nb_statements;
 	uint32_t query_idx;
 	hugeint_t uuid;

@@ -15,7 +15,7 @@ bool ShouldRun(TableFunctionInput &input) {
 }
 
 unique_ptr<FunctionData> SingleBoolResultBind(ClientContext &, TableFunctionBindInput &input,
-                                              vector<LogicalType> &out_types, vector<std::string> &out_names) {
+                                              vector<LogicalType> &out_types, vector<Identifier> &out_names) {
 	out_names.emplace_back("result");
 	out_types.emplace_back(LogicalType::BOOLEAN);
 	return make_uniq<ParamsTableFunctionData>(input.inputs);

@@ -14,8 +14,10 @@ SerializedResult::SerializedResult(const hugeint_t &_uuid, QueryResult &query_re
 		return;
 	}
 
-	types = query_result.types;
-	names = query_result.names;
+	types = query_result.GetTypes();
+	for (const auto &name : query_result.GetNames()) {
+		names.push_back(name.GetIdentifierName());
+	}
 
 	while (true) {
 		auto chunk = query_result.Fetch();
@@ -145,7 +147,7 @@ SQLLogicQuery::SQLLogicQuery(const string &_query, const uint32_t _query_idx, co
 
 	it = _flags.find("load_db");
 	if (it != _flags.end()) {
-		load_db_name = it->second;
+		load_db_name = Identifier(it->second);
 	}
 
 	// skip_query: query should be skipped entirely

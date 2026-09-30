@@ -10,7 +10,7 @@ void UpdateTxStateFromTxType(const TransactionType type, TestDrivenTransactionSt
 void UpdateTxStateAfterStatement(Connection &con, TestDrivenTransactionState &state, bool rollback_if_none = false);
 
 void DetachAllDatabases(ClientContext &);
-void UseDBAndDetachOthers(Connection &, const std::string &, bool);
+void UseDBAndDetachOthers(Connection &, const Identifier &, bool);
 
 std::string UUIDToString(const hugeint_t &);
 
