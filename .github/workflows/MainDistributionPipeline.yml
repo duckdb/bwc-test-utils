@@ -165,6 +165,78 @@ jobs:
       exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
       extension_name: test_utils
 
+  duckdb-stable-145:
+    name: Build extension binaries (v1.4.5)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.4.5
+    with:
+      duckdb_version: v1.4.5
+      ci_tools_version: v1.4.5
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils  
+
+  duckdb-stable-150:
+    name: Build extension binaries (v1.5.0)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.5.0
+    with:
+      duckdb_version: v1.5.0
+      ci_tools_version: v1.5.0
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils
+
+  duckdb-stable-151:
+    name: Build extension binaries (v1.5.1)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.5.1
+    with:
+      duckdb_version: v1.5.1
+      ci_tools_version: v1.5.1
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils
+
+  duckdb-stable-152:
+    name: Build extension binaries (v1.5.2)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.5.2
+    with:
+      duckdb_version: v1.5.2
+      ci_tools_version: v1.5.2
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils
+
+  duckdb-stable-153:
+    name: Build extension binaries (v1.5.3)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.5.3
+    with:
+      duckdb_version: v1.5.3
+      ci_tools_version: v1.5.3
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils
+
+  duckdb-stable-154:
+    name: Build extension binaries (v1.5.4)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.5.4
+    with:
+      duckdb_version: v1.5.4
+      ci_tools_version: v1.5.4
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils
+
+  duckdb-stable-155:
+    name: Build extension binaries (v1.5.5)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.5.5
+    with:
+      duckdb_version: v1.5.5
+      ci_tools_version: v1.5.5
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils
+
+  duckdb-stable-156:
+    name: Build extension binaries (v1.5.6)
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@v1.5.6
+    with:
+      duckdb_version: v1.5.6
+      ci_tools_version: v1.5.6
+      exclude_archs: 'linux_arm64;linux_amd64_musl;osx_amd64;windows_amd64;windows_amd64_mingw;wasm_mvp;wasm_eh;wasm_threads'
+      extension_name: test_utils
+
   duckdb-main:
     name: Build extension binaries (main)
     uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@main
