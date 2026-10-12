@@ -15,7 +15,7 @@ bool CompareResults(ClientContext &, const vector<Value> &);
 bool SerializeResults(ClientContext &, const vector<Value> &);
 
 bool HasStorageExtension(const DBConfig &config) {
-#if DUCKDB_VERSION_AT_MOST(1, 4, 4)
+#if DUCKDB_VERSION_BEFORE(1, 5, 0)
 	return config.storage_extensions.find(STORAGE_EXTENSION_KEY) != config.storage_extensions.end();
 #else
 	return !!StorageExtension::Find(config, STORAGE_EXTENSION_KEY);
@@ -35,7 +35,7 @@ static void LoadInternal(ExtensionLoader &loader) {
 
 	set_log_level_from_env();
 
-#if DUCKDB_VERSION_AT_MOST(1, 4, 4)
+#if DUCKDB_VERSION_BEFORE(1, 5, 0)
 	auto ext = duckdb::make_uniq<duckdb::StorageExtension>();
 	ext->storage_info = duckdb::make_uniq<TUStorageExtensionInfo>();
 	instance.config.storage_extensions[STORAGE_EXTENSION_KEY] = std::move(ext);
