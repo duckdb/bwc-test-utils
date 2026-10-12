@@ -58,7 +58,7 @@ void TableFunc(ClientContext &context, TableFunctionInput &input, DataChunk &out
 
 	auto &bind_data = input.bind_data->Cast<ParamsTableFunctionData>();
 	const bool result = CallFunctionHelper<Func>::call(context, bind_data.params, func);
-#if DUCKDB_VERSION_AT_MOST(1, 5, 1)
+#if DUCKDB_VERSION_BEFORE(1, 6, 0)
 	output.SetCardinality(1);
 	output.SetValue(0, 0, result);
 #else
