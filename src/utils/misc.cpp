@@ -9,7 +9,22 @@
 #include "utils/compatibility.hpp"
 #include "utils/logger.hpp"
 
+#if !DUCKDB_VERSION_BEFORE(1, 6, 0)
+#include <duckdb/catalog/catalog_search_path.hpp>
+#include <duckdb/main/client_data.hpp>
+#endif
+
 namespace duckdb {
+
+static void SetDefaultDatabase(ClientContext &context, const std::string &db_name) {
+#if DUCKDB_VERSION_BEFORE(1, 6, 0)
+	DatabaseManager::Get(context).SetDefaultDatabase(context, db_name);
+#else
+	// The default database is now taken from the client's search path, so do what `USE <db_name>` does
+	ClientData::Get(context).catalog_search_path->Set(CatalogSearchEntry(Identifier(), Identifier(db_name)),
+	                                                  CatalogSetPathType::SET_SCHEMA);
+#endif
+}
 
 void UseDBAndDetachOthers(Connection &con, const std::string &db_name, bool need_tx) {
 	auto &db_manager = DatabaseManager::Get(*con.context);
@@ -19,7 +34,7 @@ void UseDBAndDetachOthers(Connection &con, const std::string &db_name, bool need
 	}
 
 	// First "USE" the desired database
-	db_manager.SetDefaultDatabase(*con.context, db_name);
+	SetDefaultDatabase(*con.context, db_name);
 
 	auto databases = db_manager.GetDatabases(*con.context);
 	for (auto &db : databases) {
@@ -83,7 +98,7 @@ void DetachAllDatabases(ClientContext &context) {
 			}
 		}
 
-		db_manager.SetDefaultDatabase(context, "memory");
+		SetDefaultDatabase(context, "memory");
 	}
 
 	LOG_DEBUG("Detaching all databases...");

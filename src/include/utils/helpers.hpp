@@ -27,8 +27,14 @@ struct RunOnceTableFunctionState : GlobalTableFunctionState {
 
 namespace internal {
 
+#if DUCKDB_VERSION_BEFORE(1, 6, 0)
+using BindNames = vector<std::string>;
+#else
+using BindNames = vector<Identifier>;
+#endif
+
 unique_ptr<FunctionData> SingleBoolResultBind(ClientContext &, TableFunctionBindInput &, vector<LogicalType> &out_types,
-                                              vector<std::string> &out_names);
+                                              BindNames &out_names);
 
 bool ShouldRun(TableFunctionInput &input);
 
