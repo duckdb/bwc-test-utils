@@ -10,8 +10,8 @@
 // `0 - X - 1` is 1 only when X is empty.
 #if defined(DUCKDB_MAJOR_VERSION) && (0 - DUCKDB_MAJOR_VERSION - 1) == 1
 
-#define DUCKDB_VERSION_AT_MOST(major, minor, patch)  0
-#define DUCKDB_VERSION_BEFORE(major, minor, patch)   0
+#define DUCKDB_VERSION_AT_MOST(major, minor, patch) 0
+#define DUCKDB_VERSION_BEFORE(major, minor, patch)  0
 
 #else
 
