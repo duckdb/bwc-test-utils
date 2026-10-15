@@ -6,6 +6,18 @@ set(EXTENSION_NAME ${TARGET_NAME}_extension)
 
 project(${TARGET_NAME})
 
+# DuckDB main leaves the version variables empty when built with DUCKDB_VERSION=main
+# (as extension-ci-tools does), so fall back to its release version file.
+set(DUCKDB_RELEASE_VERSION_FILE "${CMAKE_SOURCE_DIR}/scripts/ci/release_version.txt")
+if((NOT DEFINED DUCKDB_MAJOR_VERSION OR "${DUCKDB_MAJOR_VERSION}" STREQUAL "") AND EXISTS "${DUCKDB_RELEASE_VERSION_FILE}")
+    file(READ "${DUCKDB_RELEASE_VERSION_FILE}" DUCKDB_RELEASE_VERSION)
+    string(STRIP "${DUCKDB_RELEASE_VERSION}" DUCKDB_RELEASE_VERSION)
+    if(DUCKDB_RELEASE_VERSION MATCHES "^([0-9]+)[.]([0-9]+)$")
+        set(DUCKDB_MAJOR_VERSION "${CMAKE_MATCH_1}")
+        set(DUCKDB_MINOR_VERSION "${CMAKE_MATCH_2}")
+        set(DUCKDB_PATCH_VERSION "0")
+    endif()
+endif()
 
 if(NOT DEFINED DUCKDB_MAJOR_VERSION)
     message(FATAL_ERROR "DUCKDB_MAJOR_VERSION is not defined")

@@ -9,7 +9,7 @@ namespace duckdb {
 
 TUStorageExtensionInfo &TUStorageExtensionInfo::GetState(const DatabaseInstance &instance) {
 	auto &config = instance.config;
-#if DUCKDB_VERSION_AT_MOST(1, 4, 4)
+#if DUCKDB_VERSION_BEFORE(1, 5, 0)
 	auto it = config.storage_extensions.find(STORAGE_EXTENSION_KEY);
 	if (it == config.storage_extensions.end()) {
 		throw std::runtime_error("Fatal error: couldn't find the extension state.");

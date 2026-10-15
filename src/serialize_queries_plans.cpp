@@ -19,7 +19,7 @@
 #include <duckdb/parser/parser.hpp>
 #include <duckdb/parser/parsed_data/transaction_info.hpp>
 #include <duckdb/parser/statement/logical_plan_statement.hpp>
-#if DUCKDB_VERSION_AT_MOST(1, 5, 5)
+#if DUCKDB_VERSION_BEFORE(1, 6, 0)
 #include <duckdb/planner/operator/logical_simple.hpp>
 #else
 #include <duckdb/planner/operator/logical_transaction.hpp>
@@ -197,7 +197,7 @@ static void SerializeQueryStatements(Connection &con, BinarySerializer &serializ
 
 			// Manually handle transaction statements
 			if (type == LogicalOperatorType::LOGICAL_TRANSACTION) {
-#if DUCKDB_VERSION_AT_MOST(1, 5, 5)
+#if DUCKDB_VERSION_BEFORE(1, 6, 0)
 				auto tx_type = op.Cast<LogicalSimple>().info->Cast<TransactionInfo>().type;
 #else
 				auto tx_type = op.Cast<LogicalTransaction>().info->type;

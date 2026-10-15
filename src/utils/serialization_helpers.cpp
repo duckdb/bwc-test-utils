@@ -4,6 +4,8 @@
 #include <duckdb/common/serializer/deserializer.hpp>
 #include <duckdb/common/types/uuid.hpp>
 
+#include "utils/compatibility.hpp"
+
 namespace duckdb {
 
 SerializedResult::SerializedResult(const hugeint_t &_uuid, QueryResult &query_result) : SerializedResult(_uuid) {
@@ -14,8 +16,15 @@ SerializedResult::SerializedResult(const hugeint_t &_uuid, QueryResult &query_re
 		return;
 	}
 
+#if DUCKDB_VERSION_BEFORE(1, 6, 0)
 	types = query_result.types;
 	names = query_result.names;
+#else
+	types = query_result.GetTypes();
+	for (auto &name : query_result.GetNames()) {
+		names.push_back(name.GetIdentifierName());
+	}
+#endif
 
 	while (true) {
 		auto chunk = query_result.Fetch();
