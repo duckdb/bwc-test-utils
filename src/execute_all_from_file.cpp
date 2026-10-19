@@ -106,7 +106,7 @@ bool ExecuteAllPlansFromFile(ClientContext &context, const vector<Value> &params
 					deserializer.End();
 
 					plan->ResolveOperatorTypes();
-					auto result = con.context->Query(make_uniq<LogicalPlanStatement>(std::move(plan)), false);
+					auto result = MaterializedQuery(*con.context, make_uniq<LogicalPlanStatement>(std::move(plan)));
 					LOG_DEBUG("Executed statement #" << statement_idx << " of query #" << i << ": "
 					                                 << ErrorOrSuccess(*result));
 					SerializeResult(*slq, con, serializer, *result);
@@ -126,7 +126,7 @@ bool ExecuteAllPlansFromFile(ClientContext &context, const vector<Value> &params
 					LOG_DEBUG("Beginning new transaction for query #" << slq->query_idx);
 					con.BeginTransaction();
 				}
-				auto result = con.context->Query(slq->query, false);
+				auto result = MaterializedQuery(*con.context, slq->query);
 				SerializeResult(*slq, con, serializer, *result);
 				LOG_DEBUG("Executed query #" << i << ": " << ErrorOrSuccess(*result));
 			} catch (const Exception &e) {

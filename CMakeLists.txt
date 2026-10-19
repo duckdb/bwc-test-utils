@@ -6,46 +6,48 @@ set(EXTENSION_NAME ${TARGET_NAME}_extension)
 
 project(${TARGET_NAME})
 
-# DuckDB main leaves the version variables empty when built with DUCKDB_VERSION=main
-# (as extension-ci-tools does), so fall back to its release version file.
-set(DUCKDB_RELEASE_VERSION_FILE "${CMAKE_SOURCE_DIR}/scripts/ci/release_version.txt")
-if((NOT DEFINED DUCKDB_MAJOR_VERSION OR "${DUCKDB_MAJOR_VERSION}" STREQUAL "") AND EXISTS "${DUCKDB_RELEASE_VERSION_FILE}")
-    file(READ "${DUCKDB_RELEASE_VERSION_FILE}" DUCKDB_RELEASE_VERSION)
-    string(STRIP "${DUCKDB_RELEASE_VERSION}" DUCKDB_RELEASE_VERSION)
-    if(DUCKDB_RELEASE_VERSION MATCHES "^([0-9]+)[.]([0-9]+)$")
-        set(DUCKDB_MAJOR_VERSION "${CMAKE_MATCH_1}")
-        set(DUCKDB_MINOR_VERSION "${CMAKE_MATCH_2}")
-        set(DUCKDB_PATCH_VERSION "0")
-    endif()
+# DuckDB main leaves the version variables empty when built with
+# DUCKDB_VERSION=main (as extension-ci-tools does), so fall back to its release
+# version file.
+set(DUCKDB_RELEASE_VERSION_FILE
+    "${CMAKE_SOURCE_DIR}/scripts/ci/release_version.txt")
+if((NOT DEFINED DUCKDB_MAJOR_VERSION OR "${DUCKDB_MAJOR_VERSION}" STREQUAL "")
+   AND EXISTS "${DUCKDB_RELEASE_VERSION_FILE}")
+  file(READ "${DUCKDB_RELEASE_VERSION_FILE}" DUCKDB_RELEASE_VERSION)
+  string(STRIP "${DUCKDB_RELEASE_VERSION}" DUCKDB_RELEASE_VERSION)
+  if(DUCKDB_RELEASE_VERSION MATCHES "^([0-9]+)[.]([0-9]+)$")
+    set(DUCKDB_MAJOR_VERSION "${CMAKE_MATCH_1}")
+    set(DUCKDB_MINOR_VERSION "${CMAKE_MATCH_2}")
+    set(DUCKDB_PATCH_VERSION "0")
+  endif()
 endif()
 
 if(NOT DEFINED DUCKDB_MAJOR_VERSION)
-    message(FATAL_ERROR "DUCKDB_MAJOR_VERSION is not defined")
+  message(FATAL_ERROR "DUCKDB_MAJOR_VERSION is not defined")
 endif()
 
 if(NOT DEFINED DUCKDB_MINOR_VERSION)
-    message(FATAL_ERROR "DUCKDB_MINOR_VERSION is not defined")
+  message(FATAL_ERROR "DUCKDB_MINOR_VERSION is not defined")
 endif()
 
 if(NOT DEFINED DUCKDB_PATCH_VERSION)
-    message(FATAL_ERROR "DUCKDB_PATCH_VERSION is not defined")
+  message(FATAL_ERROR "DUCKDB_PATCH_VERSION is not defined")
 endif()
 
 include_directories(src/include)
 
 set(EXTENSION_SOURCES
-  src/utils/file_writer.cpp
-  src/utils/helpers.cpp
-  src/utils/logger.cpp
-  src/utils/misc.cpp
-  src/utils/serialization_helpers.cpp
-  src/execute_all_from_file.cpp
-  src/serialize_queries_plans.cpp
-  src/serialize_results.cpp
-  src/state.cpp
-  src/test_utils_extension.cpp
-  src/tu_compare_results.cpp
-)
+    src/utils/file_writer.cpp
+    src/utils/helpers.cpp
+    src/utils/logger.cpp
+    src/utils/misc.cpp
+    src/utils/serialization_helpers.cpp
+    src/execute_all_from_file.cpp
+    src/serialize_queries_plans.cpp
+    src/serialize_results.cpp
+    src/state.cpp
+    src/test_utils_extension.cpp
+    src/tu_compare_results.cpp)
 
 add_definitions(-DDUCKDB_MAJOR_VERSION=${DUCKDB_MAJOR_VERSION})
 add_definitions(-DDUCKDB_MINOR_VERSION=${DUCKDB_MINOR_VERSION})
@@ -54,11 +56,11 @@ add_definitions(-DDUCKDB_PATCH_VERSION=${DUCKDB_PATCH_VERSION})
 build_static_extension(${TARGET_NAME} ${EXTENSION_SOURCES})
 build_loadable_extension(${TARGET_NAME} " " ${EXTENSION_SOURCES})
 
-set_target_properties(${TARGET_NAME}_loadable_extension PROPERTIES CXX_VISIBILITY_PRESET default)
+set_target_properties(${TARGET_NAME}_loadable_extension
+                      PROPERTIES CXX_VISIBILITY_PRESET default)
 
 install(
   TARGETS ${EXTENSION_NAME}
   EXPORT "${DUCKDB_EXPORT_SET}"
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
-)
+  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")

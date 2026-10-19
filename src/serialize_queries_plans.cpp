@@ -69,7 +69,12 @@ bool SerializeQueriesPlansFromFile(ClientContext &context, const vector<Value> &
 	TestDrivenTransactionState test_driven_transaction_state = TestDrivenTransactionState::NONE;
 	// Now run each query and serialize the plan to the output file.
 	for (auto &slq : queries) {
+#if DUCKDB_VERSION_BEFORE(2, 1, 0)
 		Parser parser;
+#else
+		// DuckDB 2.1 removed the default constructor; the built-in parser keeps the default options used before
+		Parser parser = Parser::GetBuiltinParser();
+#endif
 		try {
 			parser.ParseQuery(slq.query);
 			slq.nb_statements = parser.statements.size();
@@ -81,7 +86,7 @@ bool SerializeQueriesPlansFromFile(ClientContext &context, const vector<Value> &
 			slq.can_deserialize_plan = false;
 			slq.can_parse_query = false;
 
-			auto result = con.context->Query(slq.query, false);
+			auto result = MaterializedQuery(*con.context, slq.query);
 			SerializeAndUpdateState(serializer, state, slq, std::move(result));
 			continue;
 		}
@@ -259,9 +264,9 @@ static void SerializeQueryStatements(Connection &con, BinarySerializer &serializ
 				// If we can deserialize the plan, we execute it
 				type = planner.plan->type;
 				planner.plan->ResolveOperatorTypes();
-				result = con.context->Query(make_uniq<LogicalPlanStatement>(std::move(planner.plan)), false);
+				result = MaterializedQuery(*con.context, make_uniq<LogicalPlanStatement>(std::move(planner.plan)));
 			} else {
-				result = con.context->Query(query, false);
+				result = MaterializedQuery(*con.context, query);
 			}
 
 			if (result->HasError() && slq.ExpectSuccess()) {
